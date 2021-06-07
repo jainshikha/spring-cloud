@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employee-service-app
+  namespace: default
+  labels:
+    k8s-app: employee-service-app
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: employee-service-app
+    spec:
+      containers:
+        - name: employee-service-app
+          image: shikhajain0502/empservice:v1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9002
+  selector:
+    matchLabels:
+      app: employee-service-app

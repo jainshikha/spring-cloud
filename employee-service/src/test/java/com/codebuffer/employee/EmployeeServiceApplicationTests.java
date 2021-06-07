@@ -1,13 +1,32 @@
 package com.codebuffer.employee;
 
+import static org.junit.Assert.assertEquals;
+
+import com.codebuffer.employee.Entity.Employee;
+import com.codebuffer.employee.Repository.EmployeeRepository;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-@SpringBootTest
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class EmployeeServiceApplicationTests {
+  @Autowired private EmployeeRepository repository;
 
-	@Test
-	void contextLoads() {
-	}
+  @Test
+   void whenValidName_thenSaveEmployee() {
+    Employee alexEmp = new Employee(1L, "alex", "zender", "shikha@gmail.com", "pass", "7755933103");
+    Employee savedEmp = repository.save(alexEmp);
+    assertEquals(savedEmp.getEmployeeFirstName(), alexEmp.getEmployeeFirstName());
+  }
 
+  @Test
+  void whenValidName_thenEmployeeShouldBeFound() {
+    Employee alexEmp = new Employee(1L, "alex", "zender", "shikha@gmail.com", "pass", "7755933103");
+    repository.save(alexEmp);
+    Optional<Employee> foundEmp = repository.findById(1L);
+    assertEquals(foundEmp.get().getEmployeeFirstName(), alexEmp.getEmployeeFirstName());
+  }
 }

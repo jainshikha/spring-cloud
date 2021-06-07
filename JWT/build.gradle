@@ -1,0 +1,65 @@
+plugins {
+    id 'org.springframework.boot' version '2.3.11.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'maven-publish'
+}
+
+group = 'com.codeBuffer'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+    implementation group: 'javax.xml.bind', name: 'jaxb-api'
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'org.springframework.security:spring-security-test'
+}
+/*afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                // Applies the component for the release build variant.
+                from components.release
+
+                // You can then customize attributes of the publication as shown below.
+                groupId = 'com.codeBuffer'
+                artifactId = 'jwt'
+                version = '1.0'
+            }
+            // Creates a Maven publication called “debug”.
+            debug(MavenPublication) {
+                // Applies the component for the debug build variant.
+                from components.debug
+
+                groupId = 'com.codeBuffer'
+                artifactId = 'jwt'
+                version = '1.0'
+            }
+        }
+    }
+}*/
+
+/*publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.codeBuffer'
+            artifactId = 'jwt'
+            version = '1.0'
+            from components.java
+        }
+    }
+}*/
+test {
+    useJUnitPlatform()
+}

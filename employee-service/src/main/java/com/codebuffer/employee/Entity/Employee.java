@@ -4,54 +4,92 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import org.springframework.lang.NonNull;
 
 @Entity
 public class Employee {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long employeeId;
-    private String employeeFirstName;
-    private String employeeLastName;
-    private String employeeEmail;
-    private Long departmentId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long employeeId;
 
-    public Long getEmployeeId() {
-        return employeeId;
-    }
+  @NonNull private String employeeFirstName;
+  @NonNull private String employeeLastName;
+  @Email private String employeeEmail;
+  private String employeePassword;
+  private String employeeMobileNo;
+  private Long departmentId;
 
-    public void setEmployeeId(Long employeeId) {
-        this.employeeId = employeeId;
-    }
+  public Employee(
+      Long employeeId,
+      @NonNull String employeeFirstName,
+      @NonNull String employeeLastName,
+      @Email String employeeEmail,
+      String employeePassword,
+      String employeeMobileNo) {
+    this.employeeId = employeeId;
+    this.employeeFirstName = employeeFirstName;
+    this.employeeLastName = employeeLastName;
+    this.employeeEmail = employeeEmail;
+    this.employeePassword = employeePassword;
+    this.employeeMobileNo = employeeMobileNo;
+  }
 
-    public String getEmployeeFirstName() {
-        return employeeFirstName;
-    }
+  public Employee() {}
 
-    public void setEmployeeFirstName(String employeeFirstName) {
-        this.employeeFirstName = employeeFirstName;
-    }
+  public String getEmployeePassword() {
+    return employeePassword;
+  }
 
-    public String getEmployeeLastName() {
-        return employeeLastName;
-    }
+  public void setEmployeePassword(String employeePassword) {
+    this.employeePassword = employeePassword;
+  }
 
-    public void setEmployeeLastName(String employeeLastName) {
-        this.employeeLastName = employeeLastName;
-    }
+  public String getEmployeeMobileNo() {
+    return employeeMobileNo;
+  }
 
-    public String getEmployeeEmail() {
-        return employeeEmail;
-    }
+  public void setEmployeeMobileNo(String employeeMobileNo) {
+    this.employeeMobileNo = employeeMobileNo;
+  }
 
-    public void setEmployeeEmail(String employeeEmail) {
-        this.employeeEmail = employeeEmail;
-    }
+  public Long getEmployeeId() {
+    return employeeId;
+  }
 
-    public Long getDepartmentId() {
-        return departmentId;
-    }
+  public void setEmployeeId(Long employeeId) {
+    this.employeeId = employeeId;
+  }
 
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
-    }
+  public String getEmployeeFirstName() {
+    return employeeFirstName;
+  }
+
+  public void setEmployeeFirstName(String employeeFirstName) {
+    this.employeeFirstName = employeeFirstName;
+  }
+
+  public String getEmployeeLastName() {
+    return employeeLastName;
+  }
+
+  public void setEmployeeLastName(String employeeLastName) {
+    this.employeeLastName = employeeLastName;
+  }
+
+  public String getEmployeeEmail() {
+    return employeeEmail;
+  }
+
+  public void setEmployeeEmail(String employeeEmail) {
+    this.employeeEmail = employeeEmail;
+  }
+
+  public Long getDepartmentId() {
+    return departmentId;
+  }
+
+  public void setDepartmentId(Long departmentId) {
+    this.departmentId = departmentId;
+  }
 }

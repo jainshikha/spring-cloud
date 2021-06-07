@@ -32,13 +32,16 @@ public class SecurityController {
     @PostMapping("/authenticate")
     public JwtResponse authenticate(@RequestBody JwtRequest jwtRequest) throws Exception {
         try {
-
+            System.out.println("helo");
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(jwtRequest.getUserName(), jwtRequest.getPassword()));
+            System.out.println("helo123");
         } catch (BadCredentialsException e) {
             throw new Exception("Invalid Creds ", e);
         }
+        System.out.println("1223");
         final UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUserName());
         final String token = jwtUtility.generateToken(userDetails);
+        System.out.println("new JwtResponse(token) is "+ new JwtResponse(token));
         return new JwtResponse(token);
     }
 }
