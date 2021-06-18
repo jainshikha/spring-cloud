@@ -5,6 +5,7 @@ import com.codeBuffer.jwt.model.JwtResponse;
 import com.codeBuffer.jwt.model.UserService;
 import com.codeBuffer.jwt.util.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,6 +26,8 @@ public class SecurityController {
 
 
     @GetMapping("/")
+    @PreAuthorize("#oauth2.hasScope('iot.tlt.w')")
+
     public String login() {
         return "security passed";
     }

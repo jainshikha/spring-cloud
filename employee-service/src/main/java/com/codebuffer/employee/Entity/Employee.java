@@ -1,16 +1,14 @@
 package com.codebuffer.employee.Entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import java.util.List;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import org.springframework.lang.NonNull;
 
 @Entity
 public class Employee {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long employeeId;
 
   @NonNull private String employeeFirstName;
@@ -19,6 +17,9 @@ public class Employee {
   private String employeePassword;
   private String employeeMobileNo;
   private Long departmentId;
+  @OneToMany private List<Address> address;
+
+  public Employee() {}
 
   public Employee(
       Long employeeId,
@@ -26,16 +27,26 @@ public class Employee {
       @NonNull String employeeLastName,
       @Email String employeeEmail,
       String employeePassword,
-      String employeeMobileNo) {
+      String employeeMobileNo,
+      Long departmentId,
+      List<Address> address) {
     this.employeeId = employeeId;
     this.employeeFirstName = employeeFirstName;
     this.employeeLastName = employeeLastName;
     this.employeeEmail = employeeEmail;
     this.employeePassword = employeePassword;
     this.employeeMobileNo = employeeMobileNo;
+    this.departmentId = departmentId;
+    this.address = address;
   }
 
-  public Employee() {}
+  public List<Address> getAddress() {
+    return address;
+  }
+
+  public void setAddress(List<Address> address) {
+    this.address = address;
+  }
 
   public String getEmployeePassword() {
     return employeePassword;

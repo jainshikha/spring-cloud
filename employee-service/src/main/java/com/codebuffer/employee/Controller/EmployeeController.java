@@ -4,24 +4,44 @@ import com.codebuffer.employee.Entity.Employee;
 import com.codebuffer.employee.Exception.EmployeeNotfoundException;
 import com.codebuffer.employee.Service.EmployeeService;
 import com.codebuffer.employee.VO.ResponseTempleteVo;
+import com.codebuffer.employee.util.FileUploadHelper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("Employee")
 public class EmployeeController {
   @Autowired private EmployeeService employeeService;
 
-  @PostMapping("/")
+  @Autowired private FileUploadHelper fileUploadHelper;
+
+  @PostMapping(value = "/")
   public Employee saveEmployee(@Valid @RequestBody Employee employee) {
     return employeeService.saveEmployee(employee);
+  }
+
+  /*image as input*/
+  @PostMapping(value = "/upload")
+  public String uploadEmpimage(@RequestParam("file") MultipartFile file) {
+    if (!file.isEmpty() && Objects.equals(file.getContentType(), "image/jpeg")) {
+      fileUploadHelper.uploadFile(file);
+      return "file uploaded successfully";
+    } else {
+      return "Attached file is empty or the file type is not jpeg";
+    }
   }
 
   /*swagger documentation via annotations*/
@@ -45,8 +65,26 @@ public class EmployeeController {
     try {
       Optional<Employee> e = employeeService.fetchEmployee(id);
       if (!e.isPresent()) {
-        throw new EmployeeNotfoundException("Employee not found. ");
+        throw new EmployeeNotfoundException("Employee not found. ", new IOException());
       }
+      return e;
+    } catch (RuntimeException e) {
+      throw new RuntimeException("Caught run time exception. Exception is: ", e);
+    }
+  }
+
+  /*
+  sample URL : localhost:9002/Employee?size=5?page=20
+  */
+  @GetMapping()
+  public Page<Employee> getAllEmployee(
+      @RequestParam(defaultValue = "3", required = false) int size,
+      @RequestParam(defaultValue = "0", required = false) int page)
+      throws EmployeeNotfoundException {
+    try {
+      Pageable paging = PageRequest.of(page, size);
+      Page<Employee> e = employeeService.fetchAllEmployee(paging);
+      new Thread(() -> System.out.println("multiple time from thread"));
       return e;
     } catch (RuntimeException e) {
       throw new RuntimeException("Caught run time exception. Exception is: ", e);
@@ -67,7 +105,7 @@ public class EmployeeController {
 
       return employeeService.saveEmployee(emp.get());
     } else {
-      throw new EmployeeNotfoundException("Employee does not Exists. ");
+      throw new EmployeeNotfoundException("Employee does not Exists. ", new IOException());
     }
   }
 

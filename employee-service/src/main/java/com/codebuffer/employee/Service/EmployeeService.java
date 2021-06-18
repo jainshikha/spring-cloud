@@ -8,6 +8,8 @@ import com.codebuffer.employee.VO.ResponseTempleteVo;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -44,5 +46,24 @@ public class EmployeeService {
     vo.setDepartment(department);
     vo.setEmployee(employee);
     return vo;
+  }
+
+  public ResponseTempleteVo fetchEmployeeWithDepartmentCloseable(Long employeeId) {
+    log.info("retrieving the employee with Department");
+    ResponseTempleteVo vo = new ResponseTempleteVo();
+    Employee employee = employeeRepository.findByEmployeeId(employeeId);
+    // CloseableHttpClient client = getHttpClient(clientSecret);
+    Department department =
+        restTemplate.getForObject(
+            "http://DEPARTMENT-SERVICE/departments/" + employee.getDepartmentId(),
+            Department.class);
+    vo.setDepartment(department);
+    vo.setEmployee(employee);
+    return vo;
+  }
+
+  public Page<Employee> fetchAllEmployee(Pageable paging) {
+    Page<Employee> pageableEmp = employeeRepository.findAll(paging);
+    return pageableEmp;
   }
 }
