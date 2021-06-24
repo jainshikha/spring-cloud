@@ -42,7 +42,11 @@ dependencies {
     implementation group: 'commons-io', name: 'commons-io', version: '2.10.0'
 
     //rest call
-    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
+    implementation group: 'org.apache.httpcomponents', name: 'httpclient'
+
+    //aop
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
+
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

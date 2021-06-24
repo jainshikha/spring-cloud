@@ -26,7 +26,7 @@ public class SecurityController {
 
 
     @GetMapping("/")
-    @PreAuthorize("#oauth2.hasScope('iot.tlt.w')")
+    //@PreAuthorize("#oauth2.hasScope('iot.tlt.w')")
 
     public String login() {
         return "security passed";
